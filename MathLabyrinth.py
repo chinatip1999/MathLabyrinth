@@ -34,18 +34,28 @@ Each contains:
 - possible block as nxt
 """
 class block:
+    """
+    data field
+    """
     data=0
     u=0
     d=0
     l=0
     r=0
-    init=0
     nxt=0
-    before=0
     visited=0
     valid=0
     def __init__(self,data,u,d,l,r):
+        """
+        Block object initialization
+        """
+        """ defines self data"""
         self.data=data
+        """
+        insert upper block and check if set lower block of
+        the upper is possible then set. else, then discard.
+        and apply to down left and right as well
+        """
         self.u=u
         try:
             u.d=self
@@ -68,39 +78,69 @@ class block:
             r.l=self
         except:
             print('',end='')
+            
     def __repr__(self):
+        """ to print the block"""
         return str(self.data)
+    
     def path(self):
         p=[]
+        """ in case of starting block, add all possible
+        (neighbor and not 0 (start block))
+        """
+        if self.data==0:
+            if type(self.u)==block and self.u.data!=0:
+                p.append(self.u)
+            if type(self.d)==block and self.d.data!=0:
+                p.append(self.d)
+            if type(self.l)==block and self.l.data!=0:
+                p.append(self.l)
+            if type(self.r)==block and self.r.data!=0:
+                p.append(self.r)
+            self.nxt=p
+            return p
+        
+        """check if there is a possible way to walk by 
+        check neighbor's data (n+1 blocks is u,d,l,r)
+        if d(n+1)-d(n)=k then add n+1 block to path list"""
+        k=2
         try:
-            if self.u.data-self.data==1 or self.u.data==-1:
+            if self.u.data-self.data==k or self.u.data==-1:
                 p.append(self.u)
         except:
             print('',end='')
         try:
-            if self.d.data-self.data==1 or self.d.data==-1:
+            if self.d.data-self.data==k or self.d.data==-1:
                 p.append(self.d)
         except:
             print('',end='')
         try:
-            if self.l.data-self.data==1 or self.l.data==-1:
+            if self.l.data-self.data==k or self.l.data==-1:
                 p.append(self.l)
         except:
             print('',end='')
         try:
-            if self.r.data-self.data==1 or self.r.data==-1:
+            if self.r.data-self.data==k or self.r.data==-1:
                 p.append(self.r)
         except:
             print('',end='')
         self.nxt=p
         return p
+    
     def detail(self):
+        """ represent data of each block in path """
         txt=''
         txt+='data: '+str(self.data)+'\nvisited: '+str(self.visited)
         print(txt)
         for i in self.nxt:
             i.detail()
+        
+            
     def walk(self):
+        """
+        walk recursively to define each block wether 
+        it's valid or invalid block in path
+        """
         print(self.data)
         self.path()
         print(self.nxt)
@@ -123,6 +163,7 @@ class block:
                 if a==0:
                     print(str(i.data)+'is invalid')
                 elif a==-1:
+                    self.addpath(i)
                     v=1
                     print(str(i.data)+'is valid')
             if v==0:
@@ -131,8 +172,21 @@ class block:
                 return 0
             else:
                 self.valid=1
+                self.addpath(self)
                 print(str(self.data)+'(self) is valid')
                 return -1
+    way=[]
+    tmp=[]
+    def addpath(self,a):
+        """
+        under development
+        """
+        self.tmp.insert(0,a)
+        if a.data==0:
+            self.way.append([self.tmp])
+            print(self.tmp)
+            self.tmp=[]
+            
         
         
 class MathL:
@@ -140,6 +194,10 @@ class MathL:
     m=[]
     start=[]
     def __init__(self,n):
+        """
+        add list data and convert to map
+        in case of edge, -99 will be replaced instead of block
+        """
         self.data=n
         self.m=[]
         for i in range(len(n)):
@@ -170,24 +228,58 @@ class MathL:
                     print('xuu')
                 l.append(a)
             self.m.append(l)
+            
     def path(self):
+        """
+        start find path
+        """
         for i in self.start:
             i.walk()
-test=[[ 0, 0, 0, 0, 1, 2],
-      [ 1, 1, 5, 6, 7, 3],
-      [ 2, 3, 4, 4, 8, 6],
-      [ 3, 6, 5, 5, 9, 10],
-      [ 1, 7, 4, 8, 7, 11],
-      [-1,-1,-1, 14, 13, 12]]
+            
+    def visit(self):
+        """
+        show visited block
+        """
+        for i in self.m:
+            for j in i:
+                print(j.visited,end=' ')
+            print('')
+    def valid(self):
+        """
+        show valid block (valid is a part of path)
+        """
+        for i in self.m:
+            for j in i:
+                print(j.valid,end=' ')
+            print('')
+            
+    def solve01(self):
+        """
+        show valid path (valid is a part of path)
+        """
+        for i in self.m:
+            for j in i:
+                if j.valid==1:
+                    txt='{:2d}'.format(j.data)
+                    print(txt,end=' ')
+                else:
+                    print('  ',end=' ')
+            print('')
+#test=[[ 0, 0, 0, 0, 1, 2],
+#      [ 1, 1, 5, 6, 7, 3],
+#      [ 2, 3, 4, 4, 8, 6],
+#      [ 3, 6, 5, 5, 9, 10],
+#      [ 1, 7, 4, 8, 7, 11],
+#      [-1,-1,-1, 14, 13, 12]]
+test=[[0,0,1,3,4,7,10,4,13,11],
+      [1,2,3,5,5,9,12,6,17,15],
+      [3,5,7,7,9,11,14,7,12,14],
+      [5,7,9,13,11,13,16,8,15,17],
+      [7,11,12,15,16,15,18,9,12,16],
+      [9,9,10,17,18,17,19,13,8,14],
+      [11,13,11,16,20,23,21,23,25,12],
+      [13,15,25,27,29,25,23,24,27,29],
+      [15,2,23,15,31,27,24,27,30,31],
+      [17,19,21,25,33,35,37,39,-1,-1]]
 a=MathL(test)
-r=[]
-for i in test:
-    l=[]
-    for j in i:
-        if j==0:
-            l.append(1)
-        elif j==-1:
-            l.append(1)
-        else:
-            l.append(0)
-    r.append(l)
+a.path()
