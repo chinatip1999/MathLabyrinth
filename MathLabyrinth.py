@@ -1,8 +1,29 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Mar 10 19:18:47 2020
-
 @author: Chinatip
+"""
+
+"""
+This is Math Labyrinth Game implementation
+Rules:
+    - there is start region ('0' blocks)
+    - there is end region ('-1' blocks)
+    - try to create path from start region to end region
+    - next block in path must higher than current block by 1
+    -------------------------
+    | 0 | 0 | 0 | 0 | 1 | 2 |
+    -------------------------
+    | 1 | 1 | 3 | 4 | 4 | 3 |
+    -------------------------
+    | 2 | 3 | 4 | 4 | 2 | 6 |
+    -------------------------
+    | 3 | 6 | 5 | 5 | 6 | 5 |
+    -------------------------
+    | 1 | 7 | 4 | 8 | 7 | 8 |
+    -------------------------
+    | -1| -1| -1| 9 | 3 | 4 |
+    -------------------------
 """
 
 """
@@ -10,6 +31,7 @@ This part is an implementation of each block in the game
 Each contains:
 - data of itself as data
 - its neighbors
+- possible block
 """
 class block:
     data=0
