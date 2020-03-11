@@ -34,6 +34,14 @@ Each contains:
 - possible block as nxt
 """
 import time
+class stack:
+    d=[]
+    def __init__(self):
+        self.d=[]
+    def push(self,a):
+        self.d.insert(0,a)
+    def pop(self):
+        return
 class block:
     """
     data field
@@ -46,6 +54,7 @@ class block:
     nxt=0
     visited=0
     valid=0
+    parent=0
     def __init__(self,data,u,d,l,r):
         """
         Block object initialization
@@ -104,7 +113,7 @@ class block:
         """check if there is a possible way to walk by 
         check neighbor's data (n+1 blocks is u,d,l,r)
         if d(n+1)-d(n)=k then add n+1 block to path list"""
-        k=2
+        k=1
         try:
             if self.u.data-self.data==k or self.u.data==-1:
                 p.append(self.u)
@@ -148,6 +157,7 @@ class block:
         if self.data==-1:
             self.visited=1
             self.valid=1
+            self.addpath(self)
             print('reached')
             return -1
         
@@ -173,9 +183,10 @@ class block:
                 return 0
             else:
                 self.valid=1
-                self.addpath(self)
                 print(str(self.data)+'(self) is valid')
                 return -1
+            
+    
     way=[]
     tmp=[]
     def addpath(self,a):
@@ -183,6 +194,7 @@ class block:
         under development
         """
         self.tmp.insert(0,a)
+        print(self.tmp)
         if a.data==0:
             self.way.append([self.tmp])
             print(self.tmp)
@@ -281,21 +293,21 @@ class MathL:
                 else:
                     print('  ',end=' ')
             print('')
-#test=[[ 0, 0, 0, 0, 1, 2],
-#      [ 1, 1, 5, 6, 7, 3],
-#      [ 2, 3, 4, 4, 8, 6],
-#      [ 3, 6, 5, 5, 9, 10],
-#      [ 1, 7, 4, 8, 7, 11],
-#      [-1,-1,-1, 14, 13, 12]]
-test=[[0,0,1,3,4,7,10,4,13,11],
-      [1,2,3,5,5,9,12,6,17,15],
-      [3,5,7,7,9,11,14,7,12,14],
-      [5,7,9,13,11,13,16,8,15,17],
-      [7,11,12,15,16,15,18,9,12,16],
-      [9,9,10,17,18,17,19,13,8,14],
-      [11,13,11,16,20,23,21,23,25,12],
-      [13,15,25,27,29,25,23,24,27,29],
-      [15,2,23,15,31,27,24,27,30,31],
-      [17,19,21,25,33,35,37,39,-1,-1]]
+test=[[ 0, 0, 0, 0, 1, 2],
+      [ 1, 1, 5, 6, 7, 3],
+      [ 2, 3, 4, 4, 8, 6],
+      [ 3, 6, 5, 5, 9, 10],
+      [ 1, 7, 4, 8, 7, 11],
+      [-1,-1,-1, 14, 13, 12]]
+#test=[[0,0,1,3,4,7,10,4,13,11],
+#      [1,2,3,5,5,9,12,6,17,15],
+#      [3,5,7,7,9,11,14,7,12,14],
+#      [5,7,9,13,11,13,16,8,15,17],
+#      [7,11,12,15,16,15,18,9,12,16],
+#      [9,9,10,17,18,17,19,13,8,14],
+#      [11,13,11,16,20,23,21,23,25,12],
+#      [13,15,25,27,29,25,23,24,27,29],
+#      [15,2,23,15,31,27,24,27,30,31],
+#      [17,19,21,25,33,35,37,39,-1,-1]]
 a=MathL(test)
 a.path()
