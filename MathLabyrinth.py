@@ -33,6 +33,7 @@ Each contains:
 - its neighbors as u,d,l,r
 - possible block as nxt
 """
+import time
 class block:
     """
     data field
@@ -233,8 +234,11 @@ class MathL:
         """
         start find path
         """
+        a=time.time_ns()
         for i in self.start:
             i.walk()
+        b=time.time_ns()
+        print(b-a)
             
     def visit(self):
         """
@@ -253,13 +257,25 @@ class MathL:
                 print(j.valid,end=' ')
             print('')
             
-    def solve01(self):
+    def result(self):
         """
         show valid path (valid is a part of path)
         """
         for i in self.m:
             for j in i:
                 if j.valid==1:
+                    txt='{:2d}'.format(j.data)
+                    print(txt,end=' ')
+                else:
+                    print('  ',end=' ')
+            print('')
+    def explain(self):
+        """
+        show valid path (valid is a part of path)
+        """
+        for i in self.m:
+            for j in i:
+                if j.visited==1:
                     txt='{:2d}'.format(j.data)
                     print(txt,end=' ')
                 else:
