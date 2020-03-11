@@ -12,17 +12,17 @@ Rules:
     - try to create path from start region to end region
     - next block in path must higher than current block by 1
     -------------------------
-    | 0 | 0 | 0 | 0 | 1 | 2 |
+    |*0*| 0 | 0 | 0 | 1 | 2 |
     -------------------------
-    | 1 | 1 | 3 | 4 | 4 | 3 |
+    ||1|| 1 | 3 | 4 | 4 | 3 |
     -------------------------
-    | 2 | 3 | 4 | 4 | 2 | 6 |
+    ||2||=3=||4|| 4 | 2 | 6 |
     -------------------------
-    | 3 | 6 | 5 | 5 | 6 | 5 |
+    | 3 |=6=||5|| 5 | 6 | 5 |
     -------------------------
-    | 1 | 7 | 4 | 8 | 7 | 8 |
+    | 1 ||7|| 4 | 8 | 7 | 8 |
     -------------------------
-    | -1| -1| -1| 9 | 3 | 4 |
+    | -1|*-1| -1| 9 | 3 | 4 |
     -------------------------
 """
 
@@ -30,8 +30,8 @@ Rules:
 This part is an implementation of each block in the game
 Each contains:
 - data of itself as data
-- its neighbors
-- possible block
+- its neighbors as u,d,l,r
+- possible block as nxt
 """
 class block:
     data=0
