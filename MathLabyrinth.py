@@ -113,7 +113,7 @@ class block:
         """check if there is a possible way to walk by 
         check neighbor's data (n+1 blocks is u,d,l,r)
         if d(n+1)-d(n)=k then add n+1 block to path list"""
-        k=1
+        k=2
         try:
             if self.u.data-self.data==k or self.u.data==-1:
                 p.append(self.u)
@@ -194,10 +194,10 @@ class block:
         under development
         """
         self.tmp.insert(0,a)
-        print(self.tmp)
+        #print(self.tmp)
         if a.data==0:
             self.way.append([self.tmp])
-            print(self.tmp)
+            #print(self.tmp)
             self.tmp=[]
             
         
@@ -226,19 +226,23 @@ class MathL:
                 try:
                     a.l=l[-1]
                 except:
-                    print('xl')
+                    0
+                    #print('xl')
                 try:
                     l[-1].r=a
                 except:
-                    print('xll')
+                    0
+                    #print('xll')
                 try:
                     a.u=self.m[i-1][j]
                 except:
-                    print('xu')
+                    0
+                    #print('xu')
                 try:
                     self.m[i-1][j].d=a
                 except:
-                    print('xuu')
+                    0
+                    #print('xuu')
                 l.append(a)
             self.m.append(l)
             
@@ -250,7 +254,18 @@ class MathL:
         for i in self.start:
             i.walk()
         b=time.time_ns()
-        print(b-a)
+        print('time: '+str((b-a)*10e-9))
+        return (b-a)*10e-9
+    
+    def printMap(self):
+        """
+        show valid path (valid is a part of path)
+        """
+        for i in self.m:
+            for j in i:
+                    txt='{:2d}'.format(j.data)
+                    print(txt,end=' ')
+            print('')
             
     def visit(self):
         """
@@ -258,15 +273,22 @@ class MathL:
         """
         for i in self.m:
             for j in i:
-                print(j.visited,end=' ')
+                txt='{:2d}'.format(j.visited)
+                print(txt,end=' ')
+                
             print('')
     def valid(self):
         """
         show valid block (valid is a part of path)
         """
+        """
+        show valid path (valid is a part of path)
+        """
         for i in self.m:
             for j in i:
-                print(j.valid,end=' ')
+                txt='{:2d}'.format(j.valid)
+                print(txt,end=' ')
+                
             print('')
             
     def result(self):
@@ -293,6 +315,16 @@ class MathL:
                 else:
                     print('  ',end=' ')
             print('')
+    def show(self):
+        self.printMap()
+        print('')
+        self.visit()
+        print('')
+        self.valid()
+        print('')
+        self.result()
+        print('\n\n')
+            
 test=[[ 0, 0, 0, 0, 1, 2],
       [ 1, 1, 5, 6, 7, 3],
       [ 2, 3, 4, 4, 8, 6],
@@ -309,5 +341,57 @@ test=[[ 0, 0, 0, 0, 1, 2],
 #      [13,15,25,27,29,25,23,24,27,29],
 #      [15,2,23,15,31,27,24,27,30,31],
 #      [17,19,21,25,33,35,37,39,-1,-1]]
-a=MathL(test)
-a.path()
+
+#4x4
+dataset=[
+[[0,1,1,4],
+[1,2,3,5],
+[3,5,5,9],
+[5,7,9,-1]],
+
+#6x6
+[[0,1,2,4,6,8],
+[1,1,3,5,7,6],
+[3,5,6,7,3,9],
+[7,7,8,9,11,6],
+[5,9,10,11,12,8],
+[9,11,13,15,17,-1]],
+
+#8x8
+[[0,1,1,2,11,13,8,14],
+[1,1,3,4,7,9,7,16],
+[3,3,5,6,21,23,25,18],
+[5,5,7,8,19,16,27,29],
+[7,7,9,10,16,18,29,31],
+[9,9,11,13,15,12,15,33],
+[11,11,5,7,23,25,27,29],
+[13,15,17,19,21,23,26,-1]],
+
+#10x10
+[[0,0,1,3,4,7,10,4,13,11],
+[1,2,3,5,5,9,12,6,17,15],
+[3,5,7,7,9,11,14,7,12,14],
+[5,7,9,13,11,13,16,8,15,17],
+[7,11,12,15,16,15,18,9,12,16],
+[9,9,10,17,18,17,19,13,8,14],
+[11,13,11,16,20,23,21,23,25,12],
+[13,15,25,27,29,25,23,24,27,29],
+[15,2,23,15,31,27,24,27,30,33],
+[17,19,21,25,33,35,37,39,41,-1]],
+
+#unsolve6x6
+[[0,2,1,3,4,5],
+[2,1,4,5,7,1],
+[6,3,5,4,9,6],
+[5,5,6,7,11,8],
+[7,6,8,9,12,10],
+[9,7,9,11,13,-1]]]
+a=[]
+t=[]
+for i in dataset:
+    k=MathL(i)
+    n=k.path()
+    t.append(n)
+    a.append(k)
+for i in a:
+    i.show()
